@@ -1,6 +1,6 @@
 # Frontend
 
-# Env variables
+## Env variables
 We need to create src/environments/environment.ts
 where you must your own values for each variable
 
@@ -17,5 +17,11 @@ export const environment = {
 }
 
 ```
+
+## Run
+```
+cd frontend/myapp && yarn start
+```
+
 
 # Backend
