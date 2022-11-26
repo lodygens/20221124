@@ -1,7 +1,7 @@
 # Frontend
 
 ## Env variables
-We must to create and fill src/environments/environment.ts
+We must create and fill src/environments/environment.ts
 
 
 ```
