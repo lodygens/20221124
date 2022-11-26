@@ -1,8 +1,8 @@
 # Frontend
 
 ## Env variables
-We need to create src/environments/environment.ts
-where you must your own values for each variable
+We must to create and fill src/environments/environment.ts
+
 
 ```
 export const environment = {
