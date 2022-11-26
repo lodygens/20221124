@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ethers, Wallet } from 'ethers';
+import { inherits } from 'util';
 import { threadId } from 'worker_threads';
 import tokenJson from '../assets/MyToken.json'
 import {environment} from "../environments/environment";
@@ -23,42 +24,66 @@ export class AppComponent {
 
   constructor (private http:HttpClient) {
     this.provider = new ethers.providers.AlchemyProvider("goerli", environment.ALCHEMY_API_KEY);
+    console.log(this.provider);
   }
 
+  /**
+   * This initializes the this.wallet and connects it to the token contract
+   */
+  init() {
+
+    if(!this.tokenContractAddr)
+      throw new Error("Token Contract address unkwown")
+    if(!this.wallet)
+      throw new Error("Wallet unknown")
+
+    this.tokenContract = new ethers.Contract(this.tokenContractAddr,
+      tokenJson.abi,
+      this.wallet);
+
+    this.wallet.getBalance().then((balanceBN:ethers.BigNumberish) => {
+      this.etherBalance = parseFloat(ethers.utils.formatEther(balanceBN));
+    });
+
+    this.tokenContract["balanceOf"](this.wallet.address)
+     .then((tokenBN:ethers.BigNumberish) => {
+        this.tokenBalance = parseFloat(ethers.utils.formatEther(tokenBN));
+      })
+
+    this.tokenContract["getVotes"](this.wallet.address)
+      .then((voteBN:ethers.BigNumberish) => {
+        this.votePower = parseFloat(ethers.utils.formatEther(voteBN));
+      })
+  }
+
+  /**
+   * This creates a new random wallet
+   */
   createWallet() {
 
     this.http.get<{result:string}>("http://localhost:3000/tokenaddress")
       .subscribe((answer) => {
 
         this.tokenContractAddr = answer.result;
+        this.wallet = ethers.Wallet.createRandom().connect(this.provider);
+        this.init()
 
-        if(this.tokenContractAddr) {
-          this.wallet = ethers.Wallet.createRandom()
-          .connect(this.provider);
-    
-
-          this.tokenContract = new ethers.Contract(this.tokenContractAddr,
-                                                    tokenJson.abi,
-                                                    this.wallet);
-
-          this.wallet.getBalance().then((balanceBN:ethers.BigNumberish) => {
-            this.etherBalance = parseFloat(ethers.utils.formatEther(balanceBN));
-          });
-          this.tokenContract["balanceOf"](this.wallet.address)
-            .then((tokenBN:ethers.BigNumberish) => {
-              this.tokenBalance = parseFloat(ethers.utils.formatEther(tokenBN));
-            })
-          this.tokenContract["getVotes"](this.wallet.address)
-            .then((voteBN:ethers.BigNumberish) => {
-              this.votePower = parseFloat(ethers.utils.formatEther(voteBN));
-            })
-        }
       })
 
   }
 
-  importWallet() {
+  /**
+   * This imports a wallet from environment.PRIVATE_KEY
+   */
 
+  importWallet() {
+    this.http.get<{result:string}>("http://localhost:3000/tokenaddress")
+      .subscribe((answer) => {
+
+        this.tokenContractAddr = answer.result;
+        this.wallet = new Wallet(environment.PRIVATE_KEY).connect(this.provider);
+        this.init();
+      })
   }
 
   claimTokens()  {
