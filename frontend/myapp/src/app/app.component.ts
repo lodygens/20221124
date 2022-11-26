@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { ethers, Wallet } from 'ethers';
 import { threadId } from 'worker_threads';
 import tokenJson from '../assets/MyToken.json'
+import {environment} from "../environments/environment";
 
 const TOKENIZEDBALLOT_ADDR = "0x89Eb37734C49e3478D55cF8EEcb4bD225A79C57B";
 
@@ -21,8 +22,7 @@ export class AppComponent {
   tokenContractAddr : string| undefined;
 
   constructor (private http:HttpClient) {
-    this.provider = ethers.providers.getDefaultProvider("goerli");
-//    this.provider = new ethers.providers.InfuraProvider();
+    this.provider = new ethers.providers.AlchemyProvider("goerli", environment.ALCHEMY_API_KEY);
   }
 
   createWallet() {
@@ -57,6 +57,10 @@ export class AppComponent {
 
   }
 
+  importWallet() {
+
+  }
+
   claimTokens()  {
     this.http.post<any>("http://localhost:3000/claimtokens", {
       address:this.wallet?.address
@@ -65,7 +69,9 @@ export class AppComponent {
         console.log({answer});
         const txHash = answer.result;
         this.provider.getTransaction(txHash).then((tx) => {
-          tx.wait().
+          tx.wait().then((receipt) => {
+            // todo: (optional) display
+          })
         })
       })
 
