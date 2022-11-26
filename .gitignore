@@ -3,6 +3,10 @@
 /node_modules
 */node_modules
 
+backend/src/environments
+frontend/src/environments
+frontend/myapp/src/environments
+
 # Logs
 logs
 *.log
