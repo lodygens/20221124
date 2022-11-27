@@ -3,7 +3,7 @@
   <div *ngIf="!wallet" class="col-lg-6 mx-auto">
     <p>To use this ballot you need a wallet</p>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-      <button 
+      <button disabled
         type="button" 
         class="btn btn-success btn-lg px-4 gap-3"
         (click)="createWallet();"
@@ -50,7 +50,7 @@
       <p>Claim your token here</p>
       <button 
         (click)="claimTokens()"
-        type="button" disabled
+        type="button"
         class="btn btn-danger btn-lg px-4 gap-3">
           Claim Tokens
       </button>
