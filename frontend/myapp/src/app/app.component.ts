@@ -6,7 +6,6 @@ import { threadId } from 'worker_threads';
 import tokenJson from '../assets/MyToken.json'
 import {environment} from "../environments/environment";
 
-const TOKENIZEDBALLOT_ADDR = "0x89Eb37734C49e3478D55cF8EEcb4bD225A79C57B";
 
 @Component({
   selector: 'app-root',
@@ -28,7 +27,8 @@ export class AppComponent {
   }
 
   /**
-   * This initializes the this.wallet and connects it to the token contract
+   * This initializes this.wallet, connects it to the token contract
+   * and retrieves some informations
    */
   init() {
 
@@ -73,7 +73,7 @@ export class AppComponent {
   }
 
   /**
-   * This imports a wallet from environment.PRIVATE_KEY
+   * This imports a wallet with environment.PRIVATE_KEY
    */
 
   importWallet() {
@@ -86,7 +86,11 @@ export class AppComponent {
       })
   }
 
+  /**
+   * This claims token
+   */
   claimTokens()  {
+    console.log(this.wallet?.address);
     this.http.post<any>("http://localhost:3000/claimtokens", {
       address:this.wallet?.address
     })
@@ -95,7 +99,7 @@ export class AppComponent {
         const txHash = answer.result;
         this.provider.getTransaction(txHash).then((tx) => {
           tx.wait().then((receipt) => {
-            // todo: (optional) display
+            console.log(receipt);
           })
         })
       })
