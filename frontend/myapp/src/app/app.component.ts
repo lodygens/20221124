@@ -90,12 +90,12 @@ export class AppComponent {
    * This claims token
    */
   claimTokens()  {
-    console.log(this.wallet?.address);
+    console.log("app.component wallet.address = ", this.wallet?.address);
     this.http.post<any>("http://localhost:3000/claimtokens", {
       address:this.wallet?.address
     })
       .subscribe((answer) => {
-        console.log({answer});
+        console.log("app.component answer = ", answer);
         const txHash = answer.result;
         this.provider.getTransaction(txHash).then((tx) => {
           tx.wait().then((receipt) => {
@@ -105,6 +105,7 @@ export class AppComponent {
       })
 
   }
+  
   connectBallot(address :string)  {
   }
 

@@ -22,7 +22,6 @@ export class AppService {
   constructor() {
 
     this.provider = new ethers.providers.AlchemyProvider("goerli", process.env.ALCHEMY_API_KEY);
-    console.log(this.provider);
 
     this.wallet = new ethers.Wallet(process.env.PRIVATE_KEY).connect(this.provider);
 
@@ -39,10 +38,14 @@ export class AppService {
     return {result: TOKENIZEDBALLOT_ADDR};
   }
 
-  async claimTokens(address: string) {
-    const mintTx = await this.tokenContract.mint(address, TEST_MINT_VALUE);
-    const receipt = await mintTx.wait();
-  
-    return {result: `${receipt.txHash}`}
+claimTokens(address: string) {
+  const mintTx = this.tokenContract.mint(address, TEST_MINT_VALUE).then((tx)=>{    
+//    console.log("app.service clainttokens tx = ", tx);
+    tx.wait().then((receipt) =>{
+        console.log("app.service clainttokens receipt[\"transactionHash\"] = ", receipt["transactionHash"]);
+        return {result: `${receipt["transactionHash"]}`}
+      })
+    })
+
   }
 }
