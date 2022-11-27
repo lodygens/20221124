@@ -1,7 +1,7 @@
 # Frontend
 
 ## Env variables
-We must create and fill src/environments/environment.ts
+In order to import wallet, we must create and fill frontend/src/environments/environment.ts
 
 
 ```
@@ -24,3 +24,22 @@ cd frontend/myapp && yarn start
 
 
 # Backend
+## Env variables
+In order to import wallet, we must create and fill backend/.env
+
+
+```
+MNEMONIC=""
+PRIVATE_KEY=""
+INFURA_API_KEY=""
+INFURA_API_SECRET=""
+ALCHEMY_API_KEY=""
+ETHERSCAN_API_KEY=""
+
+
+```
+
+## Run
+```
+cd backend && yarn start:dev
+```
