@@ -3,7 +3,7 @@ import { AppService } from './app.service';
 import { ethers } from "ethers";
 import { hashMessage } from 'ethers/lib/utils';
 
-export class ClaimTokenDTO {
+export class claimTokenDto {
   address: string;
 }
 
@@ -16,9 +16,15 @@ export class AppController {
   getTokenAddress() {
     return this.appService.getTokenAddress();
   }
+
+  @Get("ballotaddress")
+  getBallotAddress() {
+    return this.appService.getBallotAddress();
+  }
   
   @Post("claimtokens")
-  claimTokens(@Body('body') body: ClaimTokenDTO)  {
+  claimTokens(@Body('body') body: claimTokenDto)  {
+    console.log(body);
     return this.appService.claimTokens(body.address);
   }
 
