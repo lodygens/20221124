@@ -29,7 +29,9 @@
   <div *ngIf="wallet" class="col-lg-6 mx-auto">
     <p>Your wallet address : {{wallet.address}}</p>
 
-    <p>Connected to token : {{tokenContractAddr}}</p>
+    <p>Token address : {{tokenContractAddr}}</p>
+
+    <p>Ballot address : {{ballotContractAddr}}</p>
     
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
       <div class="card">
@@ -47,7 +49,7 @@
       </div>
     </div>
     <div border-style="solid">
-      <p>Claim your token here</p>
+      <p> </p>
       <button 
         (click)="claimTokens()"
         type="button"
@@ -56,17 +58,10 @@
       </button>
     </div>
     <div >
-      <p>Connect to the ballot</p>
-      <p>
-        <input 
-          #ballotContractAddress 
-          class="form-control mb-4"
-          type="text" 
-          placeholder="Paste TokenizedBallot contract address here " />
-      </p>
+      <p> </p>
       <button 
-        (click)="connectBallot(ballotContractAddress.value)"
-        type="button" disabled
+        (click)="connectBallot()"
+        type="button"
         class="btn btn-danger btn-lg px-4 gap-3">
          Connect to the Ballot
       </button>
