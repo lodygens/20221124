@@ -23,9 +23,12 @@ export class AppController {
   }
   
   @Post("claimtokens")
-  async  claimTokens(@Body() body: claimTokenDto)  {
-    console.log(body);
-    return this.appService.claimTokens(body.address);
+  async claimTokens(@Body() body: claimTokenDto)  {
+    console.log("app.controller body = ", body);
+    await this.appService.claimTokens(body.address).then(result => {
+      console.log("app.controller result = ", result);
+      return result;
+      });
   }
 
 }

@@ -38,14 +38,9 @@ export class AppService {
     return {result: TOKENIZEDBALLOT_ADDR};
   }
 
-claimTokens(address: string) {
-  const mintTx = this.tokenContract.mint(address, TEST_MINT_VALUE).then((tx)=>{    
-//    console.log("app.service clainttokens tx = ", tx);
-    tx.wait().then((receipt) =>{
-        console.log("app.service clainttokens receipt[\"transactionHash\"] = ", receipt["transactionHash"]);
-        return {result: `${receipt["transactionHash"]}`}
-      })
-    })
-
+  async claimTokens(address: string) {
+    const mintTx = await this.tokenContract.mint(address, TEST_MINT_VALUE);
+    const receipt = await mintTx.wait();
+    return {result: receipt.transactionHash};
   }
 }
