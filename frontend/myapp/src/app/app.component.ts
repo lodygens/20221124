@@ -4,6 +4,7 @@ import { ethers, Wallet } from 'ethers';
 import { inherits } from 'util';
 import { threadId } from 'worker_threads';
 import tokenJson from '../assets/MyToken.json'
+import ballotJson from '../assets/TokenizedBallot.json'
 import { environment } from "../environments/environment";
 
 
@@ -53,6 +54,9 @@ export class AppComponent {
 
             this.tokenContract = new ethers.Contract(this.tokenContractAddr,
               tokenJson.abi,
+              this.wallet);
+            this.ballotContract = new ethers.Contract(this.ballotContractAddr,
+              ballotJson.abi,
               this.wallet);
 
             this.wallet.getBalance().then((balanceBN: ethers.BigNumberish) => {
@@ -105,10 +109,14 @@ export class AppComponent {
           })
         })
       })
-
   }
 
-  connectBallot() {
+  delegateVote(address: string) {
+    if(!this.tokenContract) throw new Error('token contract unkown');
+    if(!this.wallet) throw new Error('wallet unkown');
+    let delegateTx = this.tokenContract.connect(this.wallet)['delegate'](address).then(() => {
+      console.log('done');
+    });
   }
 
 }

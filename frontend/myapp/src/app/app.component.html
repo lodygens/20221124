@@ -59,11 +59,18 @@
     </div>
     <div >
       <p> </p>
+      <p>
+        <input 
+          #delegateAddress 
+          class="form-control mb-4"
+          type="text" 
+          placeholder="Paste here, the wallet address to delegate vote to" />
+      </p>
       <button 
-        (click)="connectBallot()"
-        type="button"
+        (click)="delegateVote(delegateAddress.value)"
+        type="button" 
         class="btn btn-danger btn-lg px-4 gap-3">
-         Connect to the Ballot
+         Delegate Vote
       </button>
     </div>
   </div>
