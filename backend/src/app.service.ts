@@ -15,9 +15,10 @@ const TEST_MINT_VALUE = ethers.utils.parseEther("10");
 @Injectable()
 export class AppService {
 
-  tokenContract : ethers.Contract | undefined; 
-  wallet : ethers.Wallet | undefined;
-  provider : ethers.providers.Provider;
+  tokenContract: ethers.Contract | undefined;
+  ballotContract: ethers.Contract | undefined;
+  wallet: ethers.Wallet | undefined;
+  provider: ethers.providers.Provider;
 
   constructor() {
 
@@ -28,19 +29,22 @@ export class AppService {
     this.tokenContract = new ethers.Contract(TOKEN_ADDR,
       tokenJson.abi,
       this.wallet);
+    this.ballotContract = new ethers.Contract(TOKEN_ADDR,
+      ballotJson.abi,
+      this.wallet);
   }
 
   getTokenAddress() {
-    return {result: TOKEN_ADDR};
+    return { result: TOKEN_ADDR };
   }
 
   getBallotAddress() {
-    return {result: TOKENIZEDBALLOT_ADDR};
+    return { result: TOKENIZEDBALLOT_ADDR };
   }
 
   async claimTokens(address: string) {
     const mintTx = await this.tokenContract.mint(address, TEST_MINT_VALUE);
     const receipt = await mintTx.wait();
-    return {result: receipt.transactionHash};
+    return { result: receipt.transactionHash };
   }
 }
